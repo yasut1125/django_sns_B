@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  db:
+    container_name: sns_postgres
+    build:
+      context: .
+      dockerfile: ./dockerfiles/postgres/Dockerfile
+      args:
+        - DB_LANG=ja_JP
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - sns-net
+  web:
+    container_name: sns_django
+    build:
+      context: .
+      dockerfile: ./dockerfiles/django/Dockerfile
+    volumes:
+      - ./src:/src
+    ports:
+      - "8000:8000"
+    working_dir: /src
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    tty: true
+    depends_on:
+      - db
+    networks:
+      - sns-net
+
+networks:
+  sns-net:
+    driver: bridge

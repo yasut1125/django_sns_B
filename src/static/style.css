@@ -1,0 +1,20 @@
+.box {
+    display: flex;
+    justify-content: space-between;
+}
+
+span.uname {
+    font-weight: bold;
+    font-size: 20px;
+}
+span.content {
+    font-size: 15px;
+    overflow-wrap: break-word;
+}
+.tmstmp {
+    display: flex;
+    justify-content: flex-end;
+}
+span.time {
+    font-size: 10px;
+}
